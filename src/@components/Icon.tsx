@@ -13,6 +13,7 @@ import { ReactComponent as Profile } from '_assets/icons/profile.svg';
 import { ReactComponent as ArrowBack } from '_assets/icons/arrow-back.svg';
 import { ReactComponent as Add } from '_assets/icons/add.svg';
 import { ReactComponent as SuccessLogo } from '_assets/icons/success-logo.svg';
+import { ReactComponent as FailedLogo } from '_assets/icons/failed-logo.svg';
 import { ReactComponent as Dashboard } from '_assets/icons/dashboard.svg';
 import { ReactComponent as Users } from '_assets/icons/users.svg';
 import { ReactComponent as QRCodeV2 } from '_assets/icons/qr-code-v2.svg';
@@ -84,6 +85,7 @@ export type IconType =
 	| 'MobileLoginLogo'
 	| 'LightLogo'
 	| 'SuccessLogo'
+	| 'FailedLogo'
 	| 'OpenEye'
 	| 'WarningDanger'
 	| 'Home'
@@ -165,6 +167,7 @@ export const Icons: {
 	MobileLoginLogo,
 	LightLogo,
 	SuccessLogo,
+	FailedLogo,
 	OpenEye,
 	WarningDanger,
 	Home,

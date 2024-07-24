@@ -105,10 +105,17 @@ const PaymentError = () => {
 						alignSelf={'center'}
 						paddingTop={`30vh`}
 					>
-						<IconFinder
-							iconName='SuccessLogo'
-							iconProps={{ fill: theme.palette.success.main }}
-						/>
+						{paymentStatus === 'success' ? (
+							<IconFinder
+								iconName='SuccessLogo'
+								iconProps={{ fill: theme.palette.success.main }}
+							/>
+						) : (
+							<IconFinder
+								iconName='FailedLogo'
+								iconProps={{ fill: theme.palette.error.main }}
+							/>
+						)}
 					</Stack>
 
 					<FiraSansTypography
@@ -117,7 +124,7 @@ const PaymentError = () => {
 						fontWeight={600}
 						sx={{ color: theme.palette.common.white }}
 					>
-						Payment Successful
+						{paymentStatus === 'success' ? 'Payment Successful' : 'Payment Failed'}
 					</FiraSansTypography>
 					{/* <FiraSansTypography
 						variant='h6'
