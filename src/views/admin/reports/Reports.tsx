@@ -477,13 +477,13 @@ const DownloadPopup = (props: DownloadPopupProps) => {
 				break;
 			case 'Quarterly TDS Return':
 				if (customerDisbursement === 'Apr - Jun') {
-					quartermonts = 1;
-				} else if (customerDisbursement === 'Jul - Sep') {
 					quartermonts = 2;
-				} else if (customerDisbursement === 'Oct - Dec') {
+				} else if (customerDisbursement === 'Jul - Sep') {
 					quartermonts = 3;
-				} else if (customerDisbursement === 'Jan - Dec') {
+				} else if (customerDisbursement === 'Oct - Dec') {
 					quartermonts = 4;
+				} else if (customerDisbursement === 'Jan - Mar') {
+					quartermonts = 1;
 				}
 				info2 = {
 					url: 'download_quarterly_tds_report',
