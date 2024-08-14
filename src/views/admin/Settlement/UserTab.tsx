@@ -284,11 +284,11 @@ const UploadExcelDialog = memo((props: UploadExcelDialogProps) => {
 							fontSize={20}
 							sx={{ color: theme.palette.common.primaryGreyText }}
 						>
-							Cancel
+							Ok
 						</PoppinsTypography>
 					</LoadingButton>
 
-					<LoadingButton
+					{/* <LoadingButton
 						variant='contained'
 						size='large'
 						sx={{ minWidth: 166, height: 46 }}
@@ -299,7 +299,7 @@ const UploadExcelDialog = memo((props: UploadExcelDialogProps) => {
 							variant='subtitle1'
 							fontSize={20}
 						>{`Upload File`}</PoppinsTypography>
-					</LoadingButton>
+					</LoadingButton> */}
 				</Stack>
 			</DialogContent>
 		</Dialog>
