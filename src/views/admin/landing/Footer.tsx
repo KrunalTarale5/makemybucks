@@ -32,7 +32,7 @@ const Footer = () => {
 					>
 						{` ❤ `}
 					</InterTypography>
-					{`	by OpenUI.`}
+					{`	by India.`}
 				</InterTypography>
 			</Stack>
 		</Stack>
