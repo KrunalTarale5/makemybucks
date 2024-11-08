@@ -18,14 +18,96 @@ import {
 import { FC, memo, useState } from 'react';
 import { useAlertDialog } from '@components/AlertDialog';
 import JSZip from 'jszip';
-import { generateQrOnBanner } from 'qr-on-banner';
+import QRCode from 'qrcode';
 
-const BUTTONS = [500, 1000, 2000, 3000, 4000, 5000, 6000];
+const BUTTONS = [5,500, 1000, 2000, 3000, 4000, 5000, 6000];
 const IMAGES: Option[] = [
 	{ label: 'Image1', value: 'bg_url_1' },
 	{ label: 'Image2', value: 'bg_url_2' },
 	{ label: 'Image3', value: 'bg_url_3' },
 ];
+
+const QR_CONFIG = {
+    x: 370,  // X position of QR code on banner (in pixels)
+    y: 900,  // Y position of QR code on banner (in pixels)
+    size: 500,  // Size of QR code (in pixels)
+    margin: 0,  // Margin around QR code
+    text: {
+        x: 250,  // X position of text
+        y: 500, // Y position of text (middle of QR)
+        font: "bold 38px Arial",  // Font style
+        color: "#70778b"  // Text color
+    }
+};
+
+const generateCustomQrOnBanner = async ({
+    stringToCreateQR,
+    bannerImg,
+    bannerText,
+}: {
+    stringToCreateQR: string;
+    bannerImg: string;
+    bannerText: string;
+}): Promise<{ blob: Blob; bannerText: string }> => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error('Canvas context not available');
+
+    const backgroundImage = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = bannerImg;
+    });
+
+    canvas.width = backgroundImage.width;
+    canvas.height = backgroundImage.height;
+
+    // Draw background
+    ctx.drawImage(backgroundImage, 0, 0);
+
+    // Generate QR code with transparent background
+    const qrCanvas = document.createElement('canvas');
+    const qrCtx = qrCanvas.getContext('2d');
+    if (!qrCtx) throw new Error('QR Canvas context not available');
+
+    // Set QR canvas size
+    qrCanvas.width = QR_CONFIG.size;
+    qrCanvas.height = QR_CONFIG.size;
+
+    // Generate QR code
+    const qrCodeDataURL = await QRCode.toCanvas(qrCanvas, stringToCreateQR, {
+        width: QR_CONFIG.size,
+        margin: QR_CONFIG.margin,
+        color: {
+            dark: '#000000',
+            light: '#ffffff00'  // Transparent background
+        }
+    });
+
+    // Draw QR code onto main canvas
+    ctx.drawImage(qrCanvas, QR_CONFIG.x, QR_CONFIG.y, QR_CONFIG.size, QR_CONFIG.size);
+
+    // Add text vertically
+    ctx.save();
+	ctx.translate(QR_CONFIG.x - 30, QR_CONFIG.y + QR_CONFIG.size - 145); 
+    ctx.rotate(-Math.PI / 2);
+    ctx.font = QR_CONFIG.text.font;
+    ctx.fillStyle = QR_CONFIG.text.color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(bannerText, 0, 0);
+    ctx.restore();
+
+    const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+            if (blob) resolve(blob);
+        }, 'image/png');
+    });
+
+    return { blob, bannerText };
+};
 
 interface DownloadQrCodeProps {
 	refetch: () => void;
@@ -93,7 +175,7 @@ const DownloadQrCode: FC<DownloadQrCodeProps> = (props) => {
 							.then((response) => {
 								Promise.all(
 									response.data.download_list.map((code) =>
-										generateQrOnBanner({
+										generateCustomQrOnBanner({
 											stringToCreateQR: `${String(process.env.REACT_APP_PAYMENT_URL)}${code.qr_id}`,
 											bannerImg: selectedImgUrl,
 											bannerText: code.qr_id,
