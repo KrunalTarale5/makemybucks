@@ -20,7 +20,7 @@ import { useAlertDialog } from '@components/AlertDialog';
 import JSZip from 'jszip';
 import QRCode from 'qrcode';
 
-const BUTTONS = [5, 500, 1000, 2000, 3000, 4000, 5000, 6000];
+const BUTTONS = [500, 1000, 2000, 3000, 4000, 5000, 6000];
 const IMAGES: Option[] = [
 	{ label: 'Image1', value: 'bg_url_1' },
 	{ label: 'Image2', value: 'bg_url_2' },
